@@ -12,18 +12,6 @@ from _tools.validator.message_error import (
 )
 
 
-class UserModel:
-    def __init__(self, name, email) -> None:
-        self.name = name
-        self.email = email
-
-    def save(self):
-        self.id = 999
-
-    def as_dict(self):
-        return {"id": self.id, "name": self.name, "email": self.email}
-
-
 class TestUserServiceRegister:
     @pytest.fixture
     def valid_data(self):
@@ -36,8 +24,8 @@ class TestUserServiceRegister:
             "email": "ldkasdkadokasdkasdopakdopaskdpoasdpoaskdpokasdpoksadpo",
         }
 
-    def test_invalid_data(self, invalid_data):
-        response, status_code = register(**invalid_data, Model=UserModel)
+    def test_invalid_data(self, invalid_data, user_model):
+        response, status_code = register(**invalid_data, Model=user_model)
 
         assert status_code == 400
         assert min_length_message(NAME_MIN_LENGTH) in response.get("name")
@@ -45,18 +33,18 @@ class TestUserServiceRegister:
             "email"
         )
 
-    def test_max_name_length(self, valid_data):
+    def test_max_name_length(self, valid_data, user_model):
         response, status_code = register(
             name="ldkasdkadokasdkasdopakdopaskdpoasdpoaskdpokasdpoksadpo",
             email=valid_data.get("email"),
-            Model=UserModel,
+            Model=user_model,
         )
 
         assert status_code == 400
         assert {"name": max_length_message(NAME_MAX_LENGTH)} == response
 
-    def test_valid_data(self, valid_data):
-        response, status_code = register(**valid_data, Model=UserModel)
+    def test_valid_data(self, valid_data, user_model):
+        response, status_code = register(**valid_data, Model=user_model)
 
         assert status_code == 200
         assert response == {**valid_data, "id": 999}
