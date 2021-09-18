@@ -1,0 +1,21 @@
+version: "3"
+
+volumes:
+  db-data:
+    driver: local
+
+services:
+  app: &app
+    hostname: app
+    image: forum
+    stdin_open: true
+    tty: true
+    build: .
+    command: bash -c "export $$(egrep -v '^#' .env | xargs) && bash"
+    ports:
+      - "9000:9000"
+    volumes:
+      - .:/usr/app
+    environment: &env
+      FLASK_ENV: "development"
+      PYTHONPATH: "/usr/app"
