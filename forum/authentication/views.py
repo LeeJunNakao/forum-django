@@ -9,7 +9,7 @@ from authentication.models import User
 
 class Register(View):
     def get(self, request):
-        template = loader.get_template('register.html')
+        template = loader.get_template("register.html")
         return HttpResponse(template.render(request=request))
 
     def post(self, request):
@@ -17,5 +17,3 @@ class Register(View):
         name, email = itemgetter("name", "email")(request.POST)
         response, status = service.register(name, email, User)
         return json_resp(response, status)
-
-        return json_resp({}, 200)

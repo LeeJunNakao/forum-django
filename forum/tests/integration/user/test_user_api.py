@@ -7,17 +7,11 @@ from _tools.validator.message_error import min_length_message, email_message
 class TestUserApiRegister:
     @pytest.fixture
     def valid_data(self):
-        return {
-            "name": "James",
-            "email": "james@email.com"
-        }
+        return {"name": "James", "email": "james@email.com"}
 
     @pytest.fixture
     def invalid_data(self):
-        return {
-            "name": "hh",
-            "email": "notAema.il"
-        }
+        return {"name": "hh", "email": "notAema.il"}
 
     @pytest.fixture
     def url(self):
@@ -41,5 +35,7 @@ class TestUserApiRegister:
         )
 
         assert response.status_code == 400
-        assert {"name": min_length_message(
-            NAME_MIN_LENGTH), "email": email_message()} == response.json()
+        assert {
+            "name": min_length_message(NAME_MIN_LENGTH),
+            "email": email_message(),
+        } == response.json()

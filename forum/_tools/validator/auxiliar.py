@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import List
 
 errors_list = List[str]
 
@@ -11,7 +11,6 @@ def get_errors(**errors_info: errors_list):
     errors_info = {
         key: filter_valid_items_list(value) for key, value in errors_info.items()
     }
-    errors = {key: ", ".join(value)
-              for key, value in errors_info.items() if value}
+    errors = {key: ", ".join(value) for key, value in errors_info.items() if value}
 
     return errors
