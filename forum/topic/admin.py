@@ -1,3 +1,4 @@
 from django.contrib import admin  # noqa: F401
+from topic.models import TopicModel
 
-# Register your models here.
+admin.site.register(TopicModel)

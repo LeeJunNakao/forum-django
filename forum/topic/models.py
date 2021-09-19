@@ -7,8 +7,11 @@ TITLE_MIN_LENGTH = 3
 
 
 class TopicModel(models.Model):
+    class Meta:
+        verbose_name = "Topic"
+
     title = models.CharField(max_length=TITLE_MAX_LENGTH)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def as_dict(self) -> Dict[str, Any]:
-        return {"title": self.title, "creator": self.creator}
+        return {"title": self.title, "creator": self.creator.as_dict()}

@@ -9,7 +9,7 @@ from authentication.models import User
 
 class Register(View):
     def get(self, request):
-        template = loader.get_template("register.html")
+        template = loader.get_template("topic.html")
         return HttpResponse(template.render(request=request))
 
     def post(self, request):
