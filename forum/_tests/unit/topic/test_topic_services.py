@@ -1,5 +1,5 @@
 import pytest
-from topic.services import create
+from topic.services.topic import create
 from topic.models import TITLE_MAX_LENGTH
 from _tools.validator.message_error import max_length_message
 
