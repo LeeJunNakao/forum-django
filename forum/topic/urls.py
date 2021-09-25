@@ -1,6 +1,9 @@
 from django.urls import path
 
-from .views import Topic
+from .views import Topic, Post
 
 app_name = "topic"
-urlpatterns = [path("create", Topic.as_view(), name="create")]
+urlpatterns = [
+    path("create", Topic.as_view(), name="create"),
+    path("<int:topic_id>/post", Post.as_view(), name="topic_post")
+]

@@ -1,0 +1,15 @@
+<h1>Tópico</h1>
+
+<form action="{% url 'topic:topic_post' topic_id %}" method="post">
+  {% csrf_token %}
+  <fieldset>
+    <label>Name:</label>
+    <input type="text" name="title" />
+    <label>Content:</label>
+    <input type="text" name="content" />
+    <label>Creator:</label>
+    <input type="text" name="creator_id" />
+  </fieldset>
+
+  <input type="submit" value="Register" />
+</form>
