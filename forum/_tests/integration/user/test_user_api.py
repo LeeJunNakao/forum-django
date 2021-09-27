@@ -1,17 +1,19 @@
 import pytest
+from toolz import dissoc
 from django.urls import reverse
-from authentication.models import NAME_MIN_LENGTH
-from _tools.validator.message_error import min_length_message, email_message
+
+from authentication.models import USERNAME_MIN_LENGTH
+from _tools.validator.message_error import min_length_message, email_message, password_message
 
 
 class TestUserApiRegister:
     @pytest.fixture
     def valid_data(self):
-        return {"name": "James", "email": "james@email.com"}
+        return {"username": "james", "email": "james@email.com", "password": "Password152*"}
 
     @pytest.fixture
     def invalid_data(self):
-        return {"name": "hh", "email": "notAema.il"}
+        return {"username": "hh", "email": "notAema.il", "password": "password"}
 
     @pytest.fixture
     def url(self):
@@ -25,7 +27,7 @@ class TestUserApiRegister:
         )
 
         assert response.status_code == 200
-        assert {**valid_data, "id": 1} == response.json()
+        assert {**dissoc(valid_data, "password"), "id": 1} == response.json()
 
     @pytest.mark.django_db
     def test_fail_register_user(self, url, invalid_data, client):
@@ -36,6 +38,7 @@ class TestUserApiRegister:
 
         assert response.status_code == 400
         assert {
-            "name": min_length_message(NAME_MIN_LENGTH),
+            "username": min_length_message(USERNAME_MIN_LENGTH),
             "email": email_message(),
+            "password": password_message()
         } == response.json()

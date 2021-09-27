@@ -13,7 +13,6 @@ class Register(View):
         return HttpResponse(template.render(request=request))
 
     def post(self, request):
-
-        name, email = itemgetter("name", "email")(request.POST)
-        response, status = service.register(name, email, User)
+        username, email, password = itemgetter("username", "email", "password")(request.POST)
+        response, status = service.register(username, email, password, User)
         return json_resp(response, status)

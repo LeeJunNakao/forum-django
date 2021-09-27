@@ -3,6 +3,15 @@ from toolz import curry
 import pytest
 
 
+class BaseModel:
+    class Objects:
+        def get(self, *args, **kwargs):
+            pass
+    
+    def __init__(self):
+        self.objects = self.Objects()
+    
+
 class UserModel:
     def __init__(self, name, email, id_=None):
         self.id = id_

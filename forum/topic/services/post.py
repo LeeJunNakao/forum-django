@@ -11,7 +11,6 @@ from topic.models import (
     CONTENT_MAX_LENGTH,
 )
 
-@transaction.atomic
 def create(
     title: str,
     content: str,

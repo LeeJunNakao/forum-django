@@ -1,16 +1,9 @@
-from django.db import models
+from django.contrib.auth.models import User as UserBase
 
-NAME_MIN_LENGTH = 5
-NAME_MAX_LENGTH = 30
+USERNAME_MIN_LENGTH = 5
+USERNAME_MAX_LENGTH = 30
 EMAIL_MAX_LENGTH = 40
 
-
-class User(models.Model):
-    name = models.CharField(max_length=NAME_MAX_LENGTH)
-    email = models.CharField(max_length=EMAIL_MAX_LENGTH)
-
-    def __str__(self):
-        return str(self.as_dict())
-
+class User(UserBase):
     def as_dict(self):
-        return {"id": self.id, "name": self.name, "email": self.email}
+        return {"id": self.id, "username": self.username, "email": self.email}
