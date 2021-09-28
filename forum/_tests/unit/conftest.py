@@ -1,5 +1,3 @@
-from typing import Type
-from toolz import curry
 import pytest
 from authentication.models import User
 
@@ -14,7 +12,6 @@ def mock_function(mocker):
 @pytest.fixture()
 def mock_module(mocker):
     return lambda name, spec: mocker.Mock(name=name, spec=spec)
-
 
 
 @pytest.fixture

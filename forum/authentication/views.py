@@ -9,7 +9,8 @@ from authentication.models import User
 
 class Register(View):
     def get(self, request):
-        template = loader.get_template("topic.html")
+        template = loader.get_template("register.html")
+
         return HttpResponse(template.render(request=request))
 
     def post(self, request):
@@ -17,4 +18,18 @@ class Register(View):
             request.POST
         )
         response, status = service.register(username, email, password, User)
+
+        return json_resp(response, status)
+
+
+class Login(View):
+    def get(self, request):
+        template = loader.get_template("login.html")
+
+        return HttpResponse(template.render(request=request))
+
+    def post(self, request):
+        username, password = itemgetter('username', 'password')(request.POST)
+        response, status = service.login(request, username=username, password=password)
+
         return json_resp(response, status)

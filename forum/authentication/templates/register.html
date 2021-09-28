@@ -1,15 +1,15 @@
 <h1>Registrar</h1>
 
 <form action="{% url 'authentication:register' %}" method="post">
-    {% csrf_token %}
-    <fieldset>
-        <label>Name:</label>
-        <input type="text" name="name" />
-    </fieldset>
-    <fieldset>
-        <label>Email:</label>
-        <input type="text" name="email" />
-    </fieldset>
+  {% csrf_token %}
+  <fieldset>
+    <label>Username:</label>
+    <input type="text" name="username" />
+    <label>Email:</label>
+    <input type="text" name="email" />
+    <label>password:</label>
+    <input type="password" name="password" />
+  </fieldset>
 
-    <input type="submit" value="Register">
+  <input type="submit" value="Register" />
 </form>

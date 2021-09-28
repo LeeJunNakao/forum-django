@@ -1,17 +1,22 @@
 import pytest
-
+from unittest.mock import Mock, MagicMock
 from topic.models import PostModel, TopicModel
 
-@pytest.fixture
-def topic_model(mock_module):
-    return mock_module(name="TopicModel", spec=TopicModel)
 
-
-@pytest.fixture
-def post_model(mock_module, mock_function):
-    def set_response(expected_response = None):
-        model = mock_module(name="PostModel", spec=PostModel)
+def set_asdict(name, spec):
+    def set(expected_response=None):
+        model = Mock(name=name, spec=spec)
         model.as_dict.return_value = expected_response
-        return mock_function("PostModel Init", model)
+        return MagicMock(name=f"{name} init", return_value=model)
 
-    return set_response
+    return set
+
+
+@pytest.fixture
+def topic_model():
+    return set_asdict(name="TopicModel", spec=TopicModel)
+
+
+@pytest.fixture
+def post_model():
+    return set_asdict(name="PostModel", spec=PostModel)

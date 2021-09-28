@@ -28,10 +28,10 @@ class TestPostApiCreate:
         }
 
     @pytest.mark.django_db
-    def test_create_post(self, url, valid_data, client):
+    def test_create_post(self, url, valid_data, logged_client):
         topic_id = valid_data.get("topic_id")
         url_path = url(topic_id)
-        response = client.post(url_path, data=dissoc(valid_data, "topic_id"))
+        response = logged_client.post(url_path, data=dissoc(valid_data, "topic_id"))
 
         title, content, creator, topic = itemgetter(
             "title", "content", "creator", "topic"
@@ -43,10 +43,10 @@ class TestPostApiCreate:
         assert creator.get("id") == valid_data.get("creator_id")
 
     @pytest.mark.django_db
-    def test_create_invalid_data(self, url, invalid_data, valid_data, client):
+    def test_create_invalid_data(self, url, invalid_data, valid_data, logged_client):
         topic_id = valid_data.get("topic_id")
         url_path = url(topic_id)
-        response = client.post(url_path, data={**valid_data, **invalid_data})
+        response = logged_client.post(url_path, data={**valid_data, **invalid_data})
 
         assert response.status_code == 400
         assert response.json() == {
@@ -55,9 +55,9 @@ class TestPostApiCreate:
         }
 
     @pytest.mark.django_db
-    def test_create_invalid_topic_id(self, url, valid_data, client):
+    def test_create_invalid_topic_id(self, url, valid_data, logged_client):
         url_path = url(777)
-        response = client.post(url_path, data={**valid_data})
+        response = logged_client.post(url_path, data={**valid_data})
 
         assert response.status_code == 400
         assert response.json() == {"error": "Could not create topic"}

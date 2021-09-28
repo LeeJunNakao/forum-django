@@ -1,3 +1,4 @@
+from unittest.mock import MagicMock
 import pytest
 from operator import itemgetter
 from toolz import assoc
@@ -33,7 +34,7 @@ class TestPostServiceCreate:
     ):
         response, status = create(
             **{**valid_data, **invalid_data},
-            topic_model=topic_model,
+            topic_model=topic_model(),
             post_model=post_model(),
         )
 
@@ -82,7 +83,7 @@ class TestPostServiceCreate:
 
         response, status = create(
             **valid_data,
-            topic_model=topic_model,
+            topic_model=topic_model(valid_data)(),
             post_model=post_model(expected_response),
         )
 

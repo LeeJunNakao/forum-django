@@ -5,7 +5,7 @@ from _tools.validator.fns import validate_max_length, validate_min_lenght
 from topic.models import TopicModel, TITLE_MAX_LENGTH, TITLE_MIN_LENGTH
 
 
-def create(title: str, user_id: int, model: Type[TopicModel]):
+def create(title: str, user_id: int, content: str, model: Type[TopicModel]):
     try:
         errors = get_errors(
             title=[
@@ -17,7 +17,7 @@ def create(title: str, user_id: int, model: Type[TopicModel]):
         if len(errors):
             return errors, 400
 
-        topic = model(title=title, creator_id=user_id)
+        topic = model(title=title, content=content, creator_id=user_id)
         topic.save()
 
         return topic.as_dict(), 200

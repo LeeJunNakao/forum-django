@@ -1,0 +1,13 @@
+<h1>Login</h1>
+
+<form action="{% url 'authentication:login' %}" method="post">
+  {% csrf_token %}
+  <fieldset>
+    <label>username:</label>
+    <input type="text" name="username" />
+    <label>password:</label>
+    <input type="password" name="password" />
+  </fieldset>
+
+  <input type="submit" value="Login" />
+</form>

@@ -13,10 +13,11 @@ class TopicModel(models.Model):
         verbose_name = "Topic"
 
     title = models.CharField(max_length=TITLE_MAX_LENGTH)
+    content = models.TextField()
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def as_dict(self) -> Dict[str, Any]:
-        return {"title": self.title, "creator": self.creator.as_dict()}
+        return {"title": self.title, "content": self.content, "creator": self.creator.as_dict()}
 
 
 class PostModel(models.Model):

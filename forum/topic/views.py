@@ -8,23 +8,29 @@ from topic.services.topic import create as create_topic
 from topic.services.post import create as create_post
 from _tools.parser.http import json_resp
 from topic.models import TopicModel, PostModel
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class Topic(View):
+class Topic(LoginRequiredMixin, View):
+    login_url = '/api/auth/login'
+
     def get(self, request):
         template = loader.get_template("topic.html")
         return HttpResponse(template.render(request=request))
 
     def post(self, request):
-        title, user_id = itemgetter("title", "user_id")(request.POST)
+        title, user_id, content = itemgetter(
+            "title", "user_id", "content")(request.POST)
 
         with transaction.atomic():
-            response, status = create_topic(title, user_id, TopicModel)
+            response, status = create_topic(title, user_id, content, TopicModel)
 
         return json_resp(response, status)
 
 
-class Post(View):
+class Post(LoginRequiredMixin, View):
+    login_url = '/api/auth/login'
+
     def get(self, request, topic_id):
         return render(request, "post.html", {"topic_id": topic_id})
 

@@ -13,11 +13,14 @@ from _tools.validator.fns import (
     validate_password,
 )
 from _tools.validator.auxiliar import get_errors
+from django.contrib.auth import authenticate, login as django_login
+
+response_data = Tuple[Dict[str, str], int]
 
 
 def register(
     username: str, email: str, password: str, user_model: Type[Model]
-) -> Tuple[Dict[str, str], int]:
+) -> response_data:
     try:
         errors = get_errors(
             username=[
@@ -31,9 +34,20 @@ def register(
         if len(errors):
             return errors, 400
 
-        user = user_model(username=username, email=email, password=password)
+        user = user_model.objects.create_user(
+            username=username, email=email, password=password)
         user.save()
         return user.as_dict(), 200
 
     except Error:
         return {"error": "Could not register user"}, 400
+
+
+def login(request, username: str, password: str) -> response_data:
+
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        django_login(request, user)
+        return {"message": "login successfully"}, 200
+    else:
+        return {"error": "Username/password invalid"}, 400

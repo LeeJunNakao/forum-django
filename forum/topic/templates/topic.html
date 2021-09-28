@@ -1,6 +1,6 @@
 <h1>Tópico</h1>
 
-<form action="{% url 'topic:create' topic_id %}" method="post">
+<form action="{% url 'topic:create' %}" method="post">
   {% csrf_token %}
   <fieldset>
     <label>Name:</label>

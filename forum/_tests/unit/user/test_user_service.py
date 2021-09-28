@@ -28,17 +28,17 @@ class TestUserServiceRegister:
             "email": "ldkasdkadokasdkasdopakdopaskdpoasdpoaskdpokasdpoksadpo",
             "password": "password"
         }
-    
+
     @pytest.fixture
     def user_model(self, mock_module, mock_function):
-        def set_response(expected_response = None):
+        def set_response(expected_response=None):
             model = mock_module("UserModel", User)
-            model.as_dict = mock_function("UserModel.as_dict", expected_response)
+            model.as_dict.return_value = expected_response
+            model.objects.create_user.return_value = model
 
             return mock_function("UserModel init", model)
-        
+
         return set_response
-            
 
     def test_invalid_data(self, invalid_data, user_model):
         response, status_code = register(**invalid_data, user_model=user_model())
@@ -62,7 +62,8 @@ class TestUserServiceRegister:
         assert {"username": max_length_message(USERNAME_MAX_LENGTH)} == response
 
     def test_valid_data(self, valid_data, user_model):
-        response, status_code = register(**valid_data, user_model=user_model(valid_data))
+        response, status_code = register(
+            **valid_data, user_model=user_model(valid_data)())
 
         assert status_code == 200
         assert response == valid_data
