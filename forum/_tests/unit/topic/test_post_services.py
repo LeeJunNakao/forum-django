@@ -24,13 +24,17 @@ class TestPostServiceCreate:
         return {
             "title": "Valid Post Title",
             "content": "Some valid text",
-            "creator_id": default_user.id,
-            "topic_id": default_topic.id,
+            "creator_id": default_user.get("id"),
+            "topic_id": default_topic.get("id"),
         }
 
-    def test_create_invalid_data(self, valid_data, invalid_data, topic_model, post_model):
+    def test_create_invalid_data(
+        self, valid_data, invalid_data, topic_model, post_model
+    ):
         response, status = create(
-            **{**valid_data, **invalid_data}, topic_model=topic_model, post_model=post_model
+            **{**valid_data, **invalid_data},
+            topic_model=topic_model,
+            post_model=post_model(),
         )
 
         assert status == 400
@@ -42,7 +46,9 @@ class TestPostServiceCreate:
     def test_title_min_length(self, valid_data, topic_model, post_model):
         title = "".join(["b" for i in range(TITLE_MIN_LENGTH - 1)])
         response, status = create(
-            **assoc(valid_data, "title", title), topic_model=topic_model, post_model=post_model
+            **assoc(valid_data, "title", title),
+            topic_model=topic_model,
+            post_model=post_model(),
         )
 
         assert status == 400
@@ -51,19 +57,33 @@ class TestPostServiceCreate:
     def test_content_max_length(self, valid_data, topic_model, post_model):
         content = "".join(["a" for i in range(CONTENT_MAX_LENGTH + 1)])
         response, status = create(
-            **assoc(valid_data, "content", content), topic_model=topic_model, post_model=post_model
+            **assoc(valid_data, "content", content),
+            topic_model=topic_model,
+            post_model=post_model(),
         )
 
         assert status == 400
         assert response == {"content": max_length_message(CONTENT_MAX_LENGTH)}
 
     def test_create_valid_data(
-        self, valid_data, topic_model, post_model, default_topic, default_user
+        self,
+        valid_data,
+        topic_model,
+        post_model,
+        default_topic,
+        default_user,
     ):
+        expected_response = {
+            "title": valid_data.get("title"),
+            "content": valid_data.get("content"),
+            "creator": default_user,
+            "topic": default_topic,
+        }
+
         response, status = create(
             **valid_data,
             topic_model=topic_model,
-            post_model=post_model(topic=default_topic, creator=default_user),
+            post_model=post_model(expected_response),
         )
 
         expected_title, expected_content, expected_creator, expected_topic = itemgetter(
@@ -74,5 +94,5 @@ class TestPostServiceCreate:
         assert status == 200
         assert expected_title == title
         assert expected_content == content
-        assert expected_creator == default_user.as_dict()
-        assert expected_topic == default_topic.as_dict()
+        assert expected_creator == default_user
+        assert expected_topic == default_topic

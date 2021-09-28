@@ -10,7 +10,7 @@ class TestPostApiCreate:
     @pytest.fixture
     def url(self):
         def get_url(topic_id):
-            return reverse('topic:topic_post', kwargs={"topic_id": topic_id})
+            return reverse("topic:topic_post", kwargs={"topic_id": topic_id})
 
         return get_url
 
@@ -20,7 +20,12 @@ class TestPostApiCreate:
 
     @pytest.fixture
     def valid_data(self, default_user, default_topic):
-        return {"title": "Some title", "content": "The post content text.", "topic_id": default_topic.id, "creator_id": default_user.id}
+        return {
+            "title": "Some title",
+            "content": "The post content text.",
+            "topic_id": default_topic.id,
+            "creator_id": default_user.id,
+        }
 
     @pytest.mark.django_db
     def test_create_post(self, url, valid_data, client):
@@ -29,12 +34,13 @@ class TestPostApiCreate:
         response = client.post(url_path, data=dissoc(valid_data, "topic_id"))
 
         title, content, creator, topic = itemgetter(
-            "title", "content", "creator", "topic")(response.json())
+            "title", "content", "creator", "topic"
+        )(response.json())
         expected_title, expected_content = itemgetter("title", "content")(valid_data)
 
         assert response.status_code == 200
         assert (title, content) == (expected_title, expected_content)
-        assert creator.get('id') == valid_data.get("creator_id")
+        assert creator.get("id") == valid_data.get("creator_id")
 
     @pytest.mark.django_db
     def test_create_invalid_data(self, url, invalid_data, valid_data, client):
@@ -45,7 +51,7 @@ class TestPostApiCreate:
         assert response.status_code == 400
         assert response.json() == {
             "content": min_length_message(CONTENT_MIN_LENGTH),
-            "title": min_length_message(TITLE_MIN_LENGTH)
+            "title": min_length_message(TITLE_MIN_LENGTH),
         }
 
     @pytest.mark.django_db

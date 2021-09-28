@@ -11,6 +11,7 @@ from topic.models import (
     CONTENT_MAX_LENGTH,
 )
 
+
 def create(
     title: str,
     content: str,
@@ -34,7 +35,7 @@ def create(
 
         if len(errors):
             return errors, 400
-        
+
         topic_model.objects.get(pk=topic_id)
         post = post_model(
             title=title, content=content, creator_id=creator_id, topic_id=topic_id

@@ -10,12 +10,14 @@ from _tools.validator.fns import (
     validate_max_length,
     validate_min_lenght,
     validate_email,
-    validate_password
+    validate_password,
 )
 from _tools.validator.auxiliar import get_errors
 
 
-def register(username: str, email: str, password: str, user_model: Type[Model]) -> Tuple[Dict[str, str], int]:
+def register(
+    username: str, email: str, password: str, user_model: Type[Model]
+) -> Tuple[Dict[str, str], int]:
     try:
         errors = get_errors(
             username=[
@@ -23,7 +25,7 @@ def register(username: str, email: str, password: str, user_model: Type[Model]) 
                 validate_max_length(username, USERNAME_MAX_LENGTH),
             ],
             email=[validate_max_length(email, EMAIL_MAX_LENGTH), validate_email(email)],
-            password=[validate_password(password)]
+            password=[validate_password(password)],
         )
 
         if len(errors):

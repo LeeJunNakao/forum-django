@@ -5,7 +5,7 @@ import pytest
 
 @pytest.fixture
 def default_user():
-    user = User(name="John Some", email="john@email.com")
+    user = User(username="John Some", email="john@email.com", password="Password52!")
     user.save()
 
     return user

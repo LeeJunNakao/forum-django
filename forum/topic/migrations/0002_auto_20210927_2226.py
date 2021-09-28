@@ -7,19 +7,23 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('authentication', '0001_initial'),
-        ('topic', '0001_initial'),
+        ("authentication", "0001_initial"),
+        ("topic", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='postmodel',
-            name='creator',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='authentication.user'),
+            model_name="postmodel",
+            name="creator",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="authentication.user"
+            ),
         ),
         migrations.AlterField(
-            model_name='topicmodel',
-            name='creator',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='authentication.user'),
+            model_name="topicmodel",
+            name="creator",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="authentication.user"
+            ),
         ),
     ]

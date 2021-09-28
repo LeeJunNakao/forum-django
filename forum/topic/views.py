@@ -10,7 +10,6 @@ from _tools.parser.http import json_resp
 from topic.models import TopicModel, PostModel
 
 
-
 class Topic(View):
     def get(self, request):
         template = loader.get_template("topic.html")
@@ -27,14 +26,20 @@ class Topic(View):
 
 class Post(View):
     def get(self, request, topic_id):
-        return render(request, 'post.html', { "topic_id": topic_id })
+        return render(request, "post.html", {"topic_id": topic_id})
 
     def post(self, request, topic_id):
-        title, content, user_id = itemgetter(
-            "title", "content", "creator_id")(request.POST)
+        title, content, user_id = itemgetter("title", "content", "creator_id")(
+            request.POST
+        )
 
         response, status = create_post(
-            title=title, content=content, creator_id=user_id, topic_id=topic_id, topic_model = TopicModel, post_model=PostModel
+            title=title,
+            content=content,
+            creator_id=user_id,
+            topic_id=topic_id,
+            topic_model=TopicModel,
+            post_model=PostModel,
         )
 
         return json_resp(response, status)
