@@ -1,0 +1,37 @@
+.main {
+    margin: 0 30px;
+}
+
+
+
+.header {
+    display: grid;
+    align-items: flex-end;
+    grid-template-columns: 1fr auto;
+    margin-bottom: 30px;
+}
+
+.topic-title {
+    font-size: 30px;
+    width: 100%;
+}
+
+.topic-content {
+    padding-right: 10px;
+}
+
+.post {
+    padding: 20px;
+    box-shadow: 0 5px 5px 2px gray;
+}
+
+.post + .post {
+    margin-top: 30px;
+
+}
+
+.post .content {
+    height: 100px;
+    overflow: scroll;
+    background-color: white;
+}

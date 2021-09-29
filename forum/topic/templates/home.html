@@ -18,10 +18,10 @@
         <a href="/api/topic/{{ topic.id }}">{{ topic.title }}</a>
       </div>
       <div class="creator">
-        <span>creator: </span>{{ topic.creator.username }}
+        <span class="span-little">creator: </span>{{ topic.creator.username }}
       </div>
       <div class="posts-quantity">
-        <span>posts:</span>{{ topic.posts_quantity }}
+        <span class="span-little">posts:</span>{{ topic.posts_quantity }}
       </div>
     </div>
     {% endfor %}

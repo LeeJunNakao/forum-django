@@ -23,3 +23,10 @@ def create(title: str, user_id: int, content: str, model: Type[TopicModel]):
         return topic.as_dict(), 200
     except Error:
         return {"error": "Could not create topic"}, 400
+
+
+def get(id_: int, model: Type[TopicModel]):
+    try:
+        return model.objects.get(pk=id_).as_dict(), 200
+    except:
+        return {"error": "Could not get topic"}, 400

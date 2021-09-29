@@ -13,7 +13,6 @@ from topic.models import (
 
 
 def create(
-    title: str,
     content: str,
     creator_id: int,
     topic_id: int,
@@ -23,10 +22,6 @@ def create(
 
     try:
         errors = get_errors(
-            title=[
-                validate_min_lenght(title, TITLE_MIN_LENGTH),
-                validate_max_length(title, TITLE_MAX_LENGTH),
-            ],
             content=[
                 validate_min_lenght(content, CONTENT_MIN_LENGTH),
                 validate_max_length(content, CONTENT_MAX_LENGTH),
@@ -38,7 +33,7 @@ def create(
 
         topic_model.objects.get(pk=topic_id)
         post = post_model(
-            title=title, content=content, creator_id=creator_id, topic_id=topic_id
+            content=content, creator_id=creator_id, topic_id=topic_id
         )
         post.save()
 

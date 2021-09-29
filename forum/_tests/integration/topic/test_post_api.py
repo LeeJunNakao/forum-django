@@ -3,7 +3,7 @@ import pytest
 from toolz import dissoc
 from django.urls import reverse
 from _tools.validator.message_error import min_length_message
-from topic.models import TITLE_MIN_LENGTH, CONTENT_MIN_LENGTH
+from topic.models import CONTENT_MIN_LENGTH
 
 
 class TestPostApiCreate:
@@ -16,12 +16,11 @@ class TestPostApiCreate:
 
     @pytest.fixture
     def invalid_data(self):
-        return {"title": "", "content": ""}
+        return {"content": ""}
 
     @pytest.fixture
     def valid_data(self, default_user, default_topic):
         return {
-            "title": "Some title",
             "content": "The post content text.",
             "topic_id": default_topic.id,
             "creator_id": default_user.id,
@@ -33,13 +32,13 @@ class TestPostApiCreate:
         url_path = url(topic_id)
         response = logged_client.post(url_path, data=dissoc(valid_data, "topic_id"))
 
-        title, content, creator, topic = itemgetter(
-            "title", "content", "creator", "topic"
+        content, creator, topic = itemgetter(
+            "content", "creator", "topic"
         )(response.json())
-        expected_title, expected_content = itemgetter("title", "content")(valid_data)
+        expected_content = itemgetter("content")(valid_data)
 
         assert response.status_code == 200
-        assert (title, content) == (expected_title, expected_content)
+        assert content == expected_content
         assert creator.get("id") == valid_data.get("creator_id")
 
     @pytest.mark.django_db
@@ -51,7 +50,6 @@ class TestPostApiCreate:
         assert response.status_code == 400
         assert response.json() == {
             "content": min_length_message(CONTENT_MIN_LENGTH),
-            "title": min_length_message(TITLE_MIN_LENGTH),
         }
 
     @pytest.mark.django_db

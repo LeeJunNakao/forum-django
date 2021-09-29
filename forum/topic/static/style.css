@@ -1,0 +1,10 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    --blue-dark: #14279B;
+    --blue-light: #B5DEFF;
+}
+
+.span-little {
+    font-size: 10px;
+}

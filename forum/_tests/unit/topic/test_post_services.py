@@ -16,14 +16,12 @@ class TestPostServiceCreate:
     @pytest.fixture
     def invalid_data(self):
         return {
-            "title": "<KLDÇASKDÇLdldaslçdkasçldkaçdksalçdkadçlaksçdlkasçldkao0dopsa0",
             "content": "",
         }
 
     @pytest.fixture
     def valid_data(self, default_user, default_topic):
         return {
-            "title": "Valid Post Title",
             "content": "Some valid text",
             "creator_id": default_user.get("id"),
             "topic_id": default_topic.get("id"),
@@ -40,20 +38,8 @@ class TestPostServiceCreate:
 
         assert status == 400
         assert response == {
-            "title": max_length_message(TITLE_MAX_LENGTH),
             "content": min_length_message(CONTENT_MIN_LENGTH),
         }
-
-    def test_title_min_length(self, valid_data, topic_model, post_model):
-        title = "".join(["b" for i in range(TITLE_MIN_LENGTH - 1)])
-        response, status = create(
-            **assoc(valid_data, "title", title),
-            topic_model=topic_model,
-            post_model=post_model(),
-        )
-
-        assert status == 400
-        assert response == {"title": min_length_message(TITLE_MIN_LENGTH)}
 
     def test_content_max_length(self, valid_data, topic_model, post_model):
         content = "".join(["a" for i in range(CONTENT_MAX_LENGTH + 1)])
@@ -75,7 +61,6 @@ class TestPostServiceCreate:
         default_user,
     ):
         expected_response = {
-            "title": valid_data.get("title"),
             "content": valid_data.get("content"),
             "creator": default_user,
             "topic": default_topic,
@@ -87,13 +72,12 @@ class TestPostServiceCreate:
             post_model=post_model(expected_response),
         )
 
-        expected_title, expected_content, expected_creator, expected_topic = itemgetter(
-            "title", "content", "creator", "topic"
+        expected_content, expected_creator, expected_topic = itemgetter(
+            "content", "creator", "topic"
         )(response)
-        title, content = itemgetter("title", "content")(response)
+        content = itemgetter("content")(response)
 
         assert status == 200
-        assert expected_title == title
         assert expected_content == content
         assert expected_creator == default_user
         assert expected_topic == default_topic

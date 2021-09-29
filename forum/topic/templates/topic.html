@@ -1,13 +1,24 @@
-<h1>Tópico</h1>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'topic.css' %}" />
 
-<form action="{% url 'topic:create' %}" method="post">
-  {% csrf_token %}
-  <fieldset>
-    <label>Name:</label>
-    <input type="text" name="title" />
-    <label>User ID:</label>
-    <input type="text" name="user_id" />
-  </fieldset>
+<div class="wrapper">
+  <div class="main">
+    <div class="header">
+      <div class="topic-title">{{ topic.title }}</div>
+      <div class="topic-content">
+        <span class="span-little">creator</span> {{ topic.creator.username}}
+      </div>
+    </div>
 
-  <input type="submit" value="Register" />
-</form>
+    {% for post in topic.posts %}
+    <div class="post">
+      <div>
+        <div class="creator">{{ post.creator.username }}</div>
+      </div>
+
+      <div class="content">{{ post.content }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
