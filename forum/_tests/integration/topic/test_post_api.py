@@ -2,6 +2,8 @@ from operator import itemgetter
 import pytest
 from toolz import dissoc
 from django.urls import reverse
+from datetime import date
+
 from _tools.validator.message_error import min_length_message
 from topic.models import CONTENT_MIN_LENGTH
 
@@ -24,6 +26,7 @@ class TestPostApiCreate:
             "content": "The post content text.",
             "topic_id": default_topic.id,
             "creator_id": default_user.id,
+            "created_at": date.today().strftime("%s"),
         }
 
     @pytest.mark.django_db
@@ -32,13 +35,15 @@ class TestPostApiCreate:
         url_path = url(topic_id)
         response = logged_client.post(url_path, data=dissoc(valid_data, "topic_id"))
 
-        content, creator, topic = itemgetter(
-            "content", "creator", "topic"
+        content, creator, created_at = itemgetter(
+            "content", "creator", "created_at"
         )(response.json())
-        expected_content = itemgetter("content")(valid_data)
+        expected_content, expected_created_at = itemgetter(
+            "content", "created_at")(valid_data)
 
         assert response.status_code == 200
         assert content == expected_content
+        assert created_at == expected_created_at
         assert creator.get("id") == valid_data.get("creator_id")
 
     @pytest.mark.django_db
