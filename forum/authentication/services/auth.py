@@ -35,7 +35,8 @@ def register(
             return errors, 400
 
         user = user_model.objects.create_user(
-            username=username, email=email, password=password)
+            username=username, email=email, password=password
+        )
         user.save()
         return user.as_dict(), 200
 

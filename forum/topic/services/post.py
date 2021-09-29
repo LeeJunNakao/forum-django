@@ -1,5 +1,5 @@
 from typing import Type
-from django.db import Error, transaction, IntegrityError
+from django.db import Error, IntegrityError
 from _tools.validator.auxiliar import get_errors
 from _tools.validator.fns import validate_max_length, validate_min_lenght
 from django.db.models import Model

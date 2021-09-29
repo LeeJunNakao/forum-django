@@ -17,7 +17,14 @@ class TopicModel(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def as_dict(self) -> Dict[str, Any]:
-        return {"title": self.title, "content": self.content, "creator": self.creator.as_dict()}
+        posts = [post.related_as_dict() for post in self.posts.all()]
+        return {
+            "id": self.id,
+            "title": self.title,
+            "content": self.content,
+            "creator": self.creator.as_dict(),
+            "posts_quantity": len(posts),
+        }
 
 
 class PostModel(models.Model):
@@ -26,13 +33,24 @@ class PostModel(models.Model):
 
     title = models.CharField(max_length=TITLE_MAX_LENGTH)
     content = models.TextField()
-    topic = models.ForeignKey(TopicModel, on_delete=models.CASCADE)
+    topic = models.ForeignKey(
+        TopicModel, related_name="posts", on_delete=models.CASCADE
+    )
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def as_dict(self) -> Dict[str, Any]:
         return {
+            "id": self.id,
             "title": self.title,
             "content": self.content,
             "topic": self.topic.as_dict(),
+            "creator": self.creator.as_dict(),
+        }
+
+    def related_as_dict(self) -> Dict[str, Any]:
+        return {
+            "id": self.id,
+            "title": self.title,
+            "content": self.content,
             "creator": self.creator.as_dict(),
         }

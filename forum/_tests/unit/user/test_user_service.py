@@ -12,21 +12,25 @@ from _tools.validator.message_error import (
     max_length_message,
     min_length_message,
     email_message,
-    password_message
+    password_message,
 )
 
 
 class TestUserServiceRegister:
     @pytest.fixture
     def valid_data(self):
-        return {"username": "Valid Name", "email": "valid_email@email.com", "password": "Password526&"}
+        return {
+            "username": "Valid Name",
+            "email": "valid_email@email.com",
+            "password": "Password526&",
+        }
 
     @pytest.fixture
     def invalid_data(self):
         return {
             "username": "sd",
             "email": "ldkasdkadokasdkasdopakdopaskdpoasdpoaskdpokasdpoksadpo",
-            "password": "password"
+            "password": "password",
         }
 
     @pytest.fixture
@@ -63,7 +67,8 @@ class TestUserServiceRegister:
 
     def test_valid_data(self, valid_data, user_model):
         response, status_code = register(
-            **valid_data, user_model=user_model(valid_data)())
+            **valid_data, user_model=user_model(valid_data)()
+        )
 
         assert status_code == 200
         assert response == valid_data

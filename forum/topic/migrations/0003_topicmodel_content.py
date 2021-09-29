@@ -6,14 +6,14 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('topic', '0002_auto_20210927_2226'),
+        ("topic", "0002_auto_20210927_2226"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='topicmodel',
-            name='content',
-            field=models.TextField(default=''),
+            model_name="topicmodel",
+            name="content",
+            field=models.TextField(default=""),
             preserve_default=False,
         ),
     ]

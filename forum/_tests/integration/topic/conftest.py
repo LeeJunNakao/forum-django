@@ -6,7 +6,11 @@ import pytest
 
 @pytest.fixture
 def default_user_data():
-    return {"username": "John Some", "email": "john@email.com", "password": "Password52!"}
+    return {
+        "username": "John Some",
+        "email": "john@email.com",
+        "password": "Password52!",
+    }
 
 
 @pytest.fixture
@@ -28,9 +32,7 @@ def logged_client(default_user_data):
 @pytest.fixture
 def default_topic(default_user):
     topic = TopicModel(
-        title="The topic",
-        content="The topic description",
-        creator=default_user
+        title="The topic", content="The topic description", creator=default_user
     )
     topic.save()
 

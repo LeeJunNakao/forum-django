@@ -9,7 +9,11 @@ from topic.models import TITLE_MAX_LENGTH
 class TestTopicApiCreate:
     @pytest.fixture
     def valid_data(self):
-        return {"title": "A valid title", "content": "A valid topic content.", "user_id": 1}
+        return {
+            "title": "A valid title",
+            "content": "A valid topic content.",
+            "user_id": 1,
+        }
 
     @pytest.fixture
     def invalid_data(self):
@@ -22,8 +26,9 @@ class TestTopicApiCreate:
     @pytest.mark.django_db
     def test_create_topic(self, url, valid_data, default_user, logged_client):
         response = logged_client.post(url, data=valid_data)
-        title, creator, content = itemgetter(
-            "title", "creator", "content")(response.json())
+        title, creator, content = itemgetter("title", "creator", "content")(
+            response.json()
+        )
 
         assert response.status_code == 200
         assert title == valid_data.get("title")
@@ -31,7 +36,9 @@ class TestTopicApiCreate:
         assert content == valid_data.get("content")
 
     @pytest.mark.django_db
-    def test_create_invalid_topic(self, url, valid_data, default_user, invalid_data, logged_client):
+    def test_create_invalid_topic(
+        self, url, valid_data, default_user, invalid_data, logged_client
+    ):
         response = logged_client.post(url, data={**valid_data, **invalid_data})
 
         assert response.status_code == 400

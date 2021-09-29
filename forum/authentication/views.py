@@ -29,7 +29,7 @@ class Login(View):
         return HttpResponse(template.render(request=request))
 
     def post(self, request):
-        username, password = itemgetter('username', 'password')(request.POST)
+        username, password = itemgetter("username", "password")(request.POST)
         response, status = service.login(request, username=username, password=password)
 
         return json_resp(response, status)

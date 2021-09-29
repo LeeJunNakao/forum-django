@@ -11,7 +11,11 @@ def valid_data():
 
 @pytest.fixture
 def invalid_data():
-    return {"title": "A title so big to make it a not valid title", "content": None, "user_id": "anyone"}
+    return {
+        "title": "A title so big to make it a not valid title",
+        "content": None,
+        "user_id": "anyone",
+    }
 
 
 @pytest.fixture
@@ -39,7 +43,8 @@ class TestTopicServiceCreate:
             "creator": default_user,
         }
         response, status_code = create(
-            **valid_data, model=topic_model(expected_response))
+            **valid_data, model=topic_model(expected_response)
+        )
 
         assert status_code == 200
         assert response == expected_response
