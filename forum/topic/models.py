@@ -26,7 +26,7 @@ class TopicModel(models.Model):
             "creator": self.creator.as_dict(),
             "posts": posts,
             "posts_quantity": len(posts),
-            "created_at": self.created_at.strftime("%s")
+            "created_at": self.created_at.strftime("%D")
         }
 
 
@@ -47,7 +47,7 @@ class PostModel(models.Model):
             "content": self.content,
             "topic": self.topic.as_dict(),
             "creator": self.creator.as_dict(),
-            "created_at": self.created_at.strftime("%s"),
+            "created_at": self.created_at.strftime("%D"),
         }
 
     def related_as_dict(self) -> Dict[str, Any]:
@@ -55,5 +55,5 @@ class PostModel(models.Model):
             "id": self.id,
             "content": self.content,
             "creator": self.creator.as_dict(),
-            "created_at": self.created_at.strftime("%s"),
+            "created_at": self.created_at.strftime("%D"),
         }

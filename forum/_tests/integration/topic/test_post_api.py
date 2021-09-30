@@ -26,7 +26,7 @@ class TestPostApiCreate:
             "content": "The post content text.",
             "topic_id": default_topic.id,
             "creator_id": default_user.id,
-            "created_at": date.today().strftime("%s"),
+            "created_at": date.today().strftime("%D"),
         }
 
     @pytest.mark.django_db
